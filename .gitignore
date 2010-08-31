@@ -1,0 +1,9 @@
+*.py[co]
+*~
+\#*#
+.DS_Store
+www/static/
+www/*.sha
+www/__init__.py
+www/images_assets.py
+www/css/

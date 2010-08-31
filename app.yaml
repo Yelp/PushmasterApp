@@ -1,0 +1,34 @@
+application: yelp-pushmaster
+version: none
+runtime: python
+api_version: 1
+
+inbound_services:
+- mail
+
+handlers:
+- url: /static/(.+)
+  static_files: www/static/\1
+  upload: www/static
+  expiration: "365d"
+
+- url: /admin/.*
+  script: $PYTHON_LIB/google/appengine/ext/admin
+  login: admin
+
+- url: /remote_api
+  script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
+  login: admin
+
+- url: /tasks/.+
+  script: pushmaster/tasks.py
+  login: admin
+
+- url: /_ah/mail/.+ 
+  script: pushmaster/mail.py
+  login: admin
+
+- url: .*
+  script: main.py
+  login: required
+

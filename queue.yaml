@@ -1,0 +1,11 @@
+queue:
+- name: default
+  rate: 5/s
+
+- name: mail
+  rate: 2/s
+  bucket_size: 50
+
+- name: xmpp
+  rate: 10/s
+  bucket_size: 50

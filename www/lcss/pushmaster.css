@@ -1,0 +1,470 @@
+/* Clearfix declarations, do not edit unless you know what you are doing! */
+.clearfix:after, .box:after{content: "."; display: block; height: 0px; clear: both; visibility: hidden; }
+.clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+
+html {
+	background: #FFF url(/images/drinking_coffee.png) no-repeat fixed bottom right;
+}
+
+body {
+	max-width: 55em;
+	margin: 1em auto;
+	padding: 0 1em 1em 1em;
+	font-family: sans-serif;
+	font-size: 14px;
+	color: #333;
+}
+
+h1 {
+  	font-size: 150%;
+    margin: 0.25em 0;
+}
+
+h2 {
+    margin: 0.25em 0;
+	font-size: 140%;
+}
+
+h3 {
+    margin: 0.25em 0;
+	font-size: 130%;
+}
+
+h4 {
+    margin: 0.25em 0;
+	font-size: 120%;
+}
+
+hr {
+	border: none;
+	height: 1px;
+	background-color: #CCC;
+}
+
+legend, button, input, textarea, select {
+	color: #333;
+}
+
+ /* overrides extra padding in Firefox */
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+	cursor: pointer;
+    border: 1px solid #CCC;
+	background-color: #FFF;
+	color: #4876FF;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 0.1em 0.1em 0 0.1em;
+}
+
+button:hover {
+    background-color: #FFF68F;
+}
+
+button:active {
+    color: #FFF68F;
+	background-color: #4876FF;
+}
+
+input, textarea, select {
+	padding: 0.2em;
+	border: 1px solid #CCC;
+	background-color: #FFF;
+}
+
+textarea {
+	resize: none; /* safari */
+}
+
+a, a:visited {
+    color: #698B69;
+	text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* general styles */
+
+h1 .datetime, h1 .email, h1 .name {
+    margin-right: 0.25em;
+}
+
+.nav {
+    padding-bottom: 0.25em;
+	border-bottom: 1px solid #CCC;
+	margin-bottom: 0.75em;
+}
+
+/** "Show Details" by default */
+#details .hide {
+    display: none;
+}
+
+/** "Hide Details" when details are shown */
+.details #details .show {
+    display: none;
+}
+
+.details #details .hide {
+    display: inline;
+}
+
+.sep {
+    margin: 0 0.25em;
+}
+
+ol.requests {
+	margin: 0.5em 0;
+}
+
+ol.requests li {
+	margin-bottom: 0.25em;
+}
+
+ol.requests li.urgent a.request-subject {
+    font-weight: bold;
+    font-size: 110%;
+}
+
+ol.my.requests li.request .email {
+    display: none;
+}
+
+ol.submissions {
+	margin: 0.5em 0 1em 0;
+}
+
+.session {
+	float: right;
+}
+
+.session >* {
+    margin-left: 0.5em;
+}
+
+h2.request-title {
+	margin-bottom: 0.5em;
+}
+
+h2.request-title >* {
+    margin-right: 0.25em;
+}
+
+div.owner {
+	margin-bottom: 0.5em;
+}
+
+div.request div.message {
+	border: 1px solid #CCC;
+	padding: 0.25em;
+	margin-bottom: 0.5em;
+}
+
+/** headlines, duh */
+
+.headline {
+    font-size: 125%;
+    background-color: rgba(224, 248, 224, 0.75);
+    padding: 0.25em;
+}
+
+.headline >* {
+    margin-right: 0.25em;
+}
+
+h3.push {
+	margin-bottom: 0.5em;
+}
+
+div.new-push {
+    margin: 1em 0;
+}
+
+/* forms */
+
+form.small {
+    display: inline;
+    margin-right: 0.25em;
+}
+
+form.small div.fields {
+    display: inline;
+}
+
+form.new-push input.push-name {
+    width: 30em;
+}
+
+form.new-push button.submit {
+    text-align: right;
+}
+
+form.request {
+	margin: 0.5em 0;
+}
+
+#new-request-form fieldset.container >legend {
+    display: none;
+}
+
+#new-request-form fieldset.container {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+form.request fieldset.container {
+	border: 1px solid #CCC;
+	padding: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+form.request fieldset.flags {
+    border: 1px solid #CCC;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+form.request fieldset legend {
+	padding: 0 0.25em;
+}
+
+form.request fieldset div {
+	margin-bottom: 0.5em;
+}
+
+form.request label {
+	padding-top: 0.25em;
+	float: left;
+	width: 10%;
+	text-align: right;
+	padding-right: 1%;
+}
+
+form.request label.checkbox {
+	padding: 0 0 0 0.5em;
+	float: none;
+	text-align: left;
+}
+
+form.request input {
+	width: 85%;
+}
+
+form.request input.date {
+    width: 6em;
+}
+
+form.request input.checkbox {
+	width: auto;
+}
+
+form.request textarea {
+	width: 85%;
+	height: 10em;
+}
+
+form.push.request div.content, form.edit.request div.content {
+    display: none;
+}
+
+div.requests {
+	margin-bottom: 0.5em;
+}
+
+/* push list */
+
+li.push {
+    margin-bottom: 1em;
+}
+
+li.push >* {
+    margin-right: 0.25em;
+}
+
+/* request list */
+
+h2.pending {
+    border-top: 1px solid #CCC;
+    padding-top: 0.25em;
+}
+
+li.request {
+    padding: 0.25em;
+    background-color: rgba(250, 250, 250, 0.75);
+    margin: 0.25em 0;
+}
+
+li.request .message {
+    display: none;
+}
+
+li.request .branch {
+    display: none;
+}
+
+.details li.request .message {
+    display: block;
+    background: #eee;
+    border-left: 1px solid #aaa;
+    line-height: 20px;
+    margin: 5px;
+    padding: 3px;
+}
+
+.details li.request .branch {
+    display: inline;
+}
+
+li.request .date {
+    display: none;
+    font-size: 80%;
+    margin-right: 0.25em;
+}
+
+li.request .email {
+    margin-right: 0.25em;
+}
+
+li.request.own {
+    background-color: rgba(181, 226, 255, 0.50);
+}
+
+li.request.future .date {
+    display: inline;
+}
+
+li.request a.request-subject {
+    margin-right: 0.25em;
+}
+
+li.request.rejected .request-subject {
+    text-decoration: line-through;
+}
+
+.badge {
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: lowercase;
+    white-space: nowrap;
+
+    padding: 0.1em 0.25em;
+    margin-right: 0.25em;
+
+    cursor: help;
+    border-radius: 0.3em;
+    -moz-border-radius: 0.3em;
+    -webkit-border-radius: 0.3em;
+}
+
+a.push-plans {
+    color: #FFF;
+    background-color: #F00;
+    cursor: pointer;
+}
+
+span.no-testing {
+    color: #FFF;
+    background-color: #FF7722;
+}
+
+span.js-serials {
+    color: #EEE;
+    background-color: rgb(36, 102, 207);
+}
+
+span.img-serials {
+    color: #EEE;
+    background-color: rgb(36, 102, 207);
+}
+
+span.tests-pass {
+    color: #EEE;
+    background-color: rgb(119, 173, 27);
+}
+
+li.request .actions {
+    float: right;
+}
+
+li.request .actions form.small {
+    margin-right: 0;
+}
+
+/* */
+
+form.request-actions, form.take-ownership {
+	display: inline;
+}
+
+div.push form.push-action {
+    float: right;
+    margin-right: 0;
+}
+
+#dialogs {
+    display: none;
+}
+
+ol.pushes {
+    margin: 0.5em 0 1em 0;
+}
+
+.bookmarklet {
+    margin-bottom: 0.5em;
+}
+
+/* last week */
+
+ul.teams {
+    margin-bottom: 50em;
+}
+
+ul.teams li.dev ol.requests li.request span.email {
+    display: none;
+}
+
+ul.teams h3 {
+    background-color: rgba(224, 248, 224, 0.75);
+    padding: 0.25em;
+}
+
+ul.teams h4 {
+    background-color: rgba(221, 238, 255, 0.75);
+    padding: 0.25em;
+}
+
+div.code {
+    padding: 0.25em;
+    font-family: monospace;
+    border: 1px solid #CCC;
+    color: #333;
+    background-color: #EEE;
+}
+
+.nothing {
+    padding: 0.25em 0;
+}
+
+#reject-request-reason {
+    height: 8em;
+    width: 100%;
+}
+
+.reject-reason {
+    margin-bottom: 1em;
+}
