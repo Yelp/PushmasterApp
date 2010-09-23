@@ -125,13 +125,15 @@ def withdraw_request(request):
 
     return request
 
-def send_to_stage(push):
+def send_to_stage(push, stage):
     assert push.state in ('accepting', 'onstage')
+    assert stage in model.Push.all_stages
 
     checkedin_requests = query.push_requests(push, state='checkedin')
     if checkedin_requests:
-        if push.state != 'onstage':
+        if push.state != 'onstage' or push.stage != stage:
             push.state = 'onstage'
+            push.stage = stage
 
             push.put()
 

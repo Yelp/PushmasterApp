@@ -83,7 +83,7 @@ def push_actions_form(push, requests):
     if push.state in ('accepting', 'onstage') and filter(lambda r: r.state == 'checkedin', requests):
         if button_count:
             fields(T.span(' or '))
-        fields(T.button(type='submit', name='act', value='sendtostage')('Mark Deployed to Stage'))
+        fields(T.button(type='button', name='sendtostage', id='send-to-stage', value=push.uri)('Mark Deployed to Stage'))
         button_count +=1
 
     if push.state == 'onstage' and requests and all(r.state == 'tested' for r in requests):
@@ -226,7 +226,7 @@ class EditPush(RequestHandler):
 
             request_states = [
                 ('Verified on Stage', 'tested', withdrawable_request_item),
-                ('On Stage', 'onstage', onstage_request_item),
+                ('On Stage (%s)' % push.stage, 'onstage', onstage_request_item),
                 ('Checked In', 'checkedin', withdrawable_request_item),
                 ('Accepted', 'accepted', accepted_request_item),
                 ]
@@ -258,7 +258,8 @@ class EditPush(RequestHandler):
         action = self.request.get('act')
 
         if action == 'sendtostage':
-            logic.send_to_stage(push)
+            stage = self.request.get('stage')
+            logic.send_to_stage(push, stage)
             self.redirect(push.uri)
 
         elif action == 'sendtolive':

@@ -143,6 +143,24 @@ pushmaster.dialog.StartPush.prototype = $.extend(new pushmaster.dialog.Dialog(),
     }
 });
 
+pushmaster.dialog.SendToStage = function() {
+    this.form = $('#sendtostage-form');
+    this.constructor.prototype.constructor.call(this);
+};
+pushmaster.dialog.SendToStage.prototype = $.extend(new pushmaster.dialog.Dialog(), {
+    dialogOptions: {
+        'title': 'Send to Stage',
+        'width': 500,
+        'height': 100,
+        'position': ['center', 100]
+    },
+
+    setAction: function(action) {
+        this.form.attr('action', action);
+        return this;
+    }
+});
+
 pushmaster.dialog.RejectRequest = function() {
     this.form = $('#reject-request-form');
     this.constructor.prototype.constructor.call(this);
@@ -221,6 +239,18 @@ pushmaster.provide('page');
         $('#new-push').click(function(e) {
             pushmaster.page.startPush.toggle();
         });
+    });
+
+    // send to stage dialog
+    $(function() {
+        pushmaster.page.sendToStage = new pushmaster.dialog.SendToStage();
+        var send_button = $('#send-to-stage');
+        if(send_button) {
+            pushmaster.page.sendToStage.setAction(send_button.attr('value'));
+            send_button.click(function(e) {
+                pushmaster.page.sendToStage.toggle();
+            });
+        }
     });
 
     // reject request dialog

@@ -39,6 +39,10 @@ class Push(TrackedModel):
 
     default_state = all_states[0]
 
+    all_stages = ('stagex', 'stagea')
+
+    default_stage = all_stages[0]
+
     owner = db.UserProperty(auto_current_user_add=True)
 
     state = db.StringProperty(choices=all_states, default=default_state)
@@ -46,6 +50,8 @@ class Push(TrackedModel):
     ltime = db.DateTimeProperty()
 
     name = db.StringProperty()
+
+    stage = db.StringProperty(choices=all_stages, default=default_stage)
 
     @property
     def requests_cache_key(self):

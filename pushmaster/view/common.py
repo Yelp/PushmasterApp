@@ -198,6 +198,20 @@ def new_push_form():
             ),
         )
 
+def sendtostage_form():
+    return T.form(action='#', method='post', class_='send-to-stage')(
+        T.div(class_='fields')(
+            T.input(type='hidden', name='act', value='sendtostage'),
+            T.div(T.label(for_='dest-stage')('Destination:')),
+            T.div(
+                T.select(name='stage', class_='dest-stage', id='dest-stage')(
+                    (T.option(value=stage)(stage)) for stage in model.Push.all_stages
+                    ),
+                ),
+            ),
+            T.div(T.button(type='submit', class_='submit')('Mark Deployed to Stage')),
+        )
+
 def reject_request_form():
     return T.form(action='#', method='post', class_='reject-request', id='reject-request-form')(
         T.div(class_='fields')(
@@ -227,13 +241,13 @@ def can_edit_request(request, push=None):
 
 display_push_state_map = {
     'accepting': 'Accepting',
-    'onstage': 'On Stage',
+    'onstage': 'On Stage (%(stage)s)',
     'live': 'Live',
     'abandoned': 'Abandoned',
     }
 
 def display_push_state(push):
-    return display_push_state_map.get(push.state, 'Unknown')
+    return display_push_state_map.get(push.state, 'Unknown') % {'stage': push.stage}
 
 favicon = T.link(rel='shortcut icon', type='image/x-icon', href=config.favicon)
 meta_content_type = T.meta(**{ 'http-equiv': 'Content-type', 'content': 'text/html;charset=UTF-8' })
@@ -276,6 +290,10 @@ class Document(XHTML):
         push_form = new_push_form()
         push_form(id='new-push-form')
         self.dialogs(push_form)
+
+        stage_form = sendtostage_form()
+        stage_form(id='sendtostage-form')
+        self.dialogs(stage_form)
 
         reject_form = reject_request_form()
         self.dialogs(reject_form)
