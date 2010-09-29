@@ -28,7 +28,7 @@ def set_request_properties(request, subject, message=None, push_plans=False, urg
     request.reject_reason = None
     request.push = None
     request.subject = subject
-    request.branch = branch
+    request.branch = branch and branch.strip()
     request.push_plans = push_plans
     request.js_serials = js_serials
     request.img_serials = img_serials
