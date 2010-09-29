@@ -144,15 +144,17 @@ def send_to_stage(push, stage):
             util.send_mail(
                 to=[owner_email, config.mail_to],
                 subject='Re: %s: %s' % (request.owner.nickname(), request.subject),
-                body='Please verify your changes on stage.\n' + config.url(push.uri))
+                body=('Please verify your changes on %s.\n%s' % (push.stage, config.url(push.uri)))
+                )
 
             util.send_im(
                 to=owner_email, 
-                message='<a href="mailto:%(pushmaster_email)s">%(pushmaster_name)s</a> requests that you verify your changes on stage for <a href="%(uri)s">%(request_subject)s</a>.',
+                message='<a href="mailto:%(pushmaster_email)s">%(pushmaster_name)s</a> requests that you verify your changes on %(stage)s for <a href="%(uri)s">%(request_subject)s</a>.',
                 pushmaster_email=push.owner.email(),
                 pushmaster_name=push.owner.nickname(),
                 request_subject=request.subject,
                 uri=config.url(push.uri),
+                stage=push.stage,
                 )
             request.put()
 

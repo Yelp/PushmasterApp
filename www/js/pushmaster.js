@@ -244,13 +244,10 @@ pushmaster.provide('page');
     // send to stage dialog
     $(function() {
         pushmaster.page.sendToStage = new pushmaster.dialog.SendToStage();
-        var send_button = $('#send-to-stage');
-        if(send_button) {
-            pushmaster.page.sendToStage.setAction(send_button.attr('value'));
-            send_button.click(function(e) {
-                pushmaster.page.sendToStage.toggle();
-            });
-        }
+        $(document).delegate('#send-to-stage', 'click', function(e) {
+            pushmaster.page.sendToStage.setAction($(e.target).attr('value'));
+            pushmaster.page.sendToStage.toggle();
+        });
     });
 
     // reject request dialog
