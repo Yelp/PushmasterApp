@@ -200,10 +200,10 @@ class EditPush(RequestHandler):
         else:
             def onstage_request_item(request):
                 li = common.request_item(request)
-                if current_user == request.owner:
-                    li.children.insert(0, T.div(class_='actions')(mark_tested_form(request)))
-                elif current_user == push.owner:
+                if current_user == push.owner:
                     li.children.insert(0, T.div(class_='actions')(mark_tested_form(request), T.span('or', class_='sep'), withdraw_form(request)))
+                elif current_user == request.owner:
+                    li.children.insert(0, T.div(class_='actions')(mark_tested_form(request)))
                 return li
 
             def withdrawable_request_item(request):
