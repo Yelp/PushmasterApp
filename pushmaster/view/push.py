@@ -235,6 +235,8 @@ class EditPush(RequestHandler):
                 if subrequests:
                     if len(subrequests) > 5:
                         label = '%(label)s (%(count)d)' % {'label': label, 'count': len(subrequests)}
+                    requestors = ', '.join(set(request.owner.nickname() for request in subrequests))
+                    label = '%(label)s - %(requestors)s' % {'label': label, 'requestors': requestors}
                     requests_div(T.h3(label), accepted_list(subrequests, request_item=request_item, state=state))
 
         if current_user == push.owner:
