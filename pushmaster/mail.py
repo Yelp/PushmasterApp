@@ -29,7 +29,7 @@ class PushMailHandler(InboundMailHandler):
         try:
             push_key = match.group(1)
             push = model.Push.get(push_key)
-            requester_emails = [request.owner.email() for request in query.push_requests(push)]
+            requester_emails = list(set([request.owner.email() for request in query.push_requests(push)]))
             kw = dict(sender=sender, to=requester_emails, subject=mail_message.subject, body=text_body, reply_to=sender)
             logging.info('sending push mail: %r', kw)
             util.send_mail(**kw)
