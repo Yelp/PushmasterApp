@@ -228,7 +228,7 @@ def reject_request_form():
 def bookmarklet(hostname):
     return T.span(
         T.span('Bookmark the following link to generate a request from within Review Board: '),
-        T.a(href='javascript:$.getScript("%s://%s/bookmarklet");' % (config.protocol, hostname))('Pushmaster App: Create Review'),
+        T.a(href='javascript:$.getScript("%s://%s/bookmarklet");' % (config.protocol, hostname))('Pushmaster App: Create Request'),
         )
 
 def hidden(**kw):
