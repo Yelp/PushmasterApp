@@ -77,17 +77,19 @@ def user_home_link(user, user_info):
 def display_user_email(user):
     return T.span(class_='email')(user_email(user)),
 
-def push_plans_badge():
+def push_plans_badge(_):
     return T.a(class_='push-plans badge', href=config.push_plans_url, title='This request has push plans.')('Push Plans')
 
-def js_serials_badge():
+def js_serials_badge(_):
     return T.span(class_='js-serials badge', title='This request requires the pushmaster to bump Javascript serials.')('JS')
 
-def img_serials_badge():
+def img_serials_badge(_):
     return T.span(class_='img-serials badge', title='This request requires the pushmaster to bump image serials.')('Image')
 
-def tests_pass_badge():
-    return T.span(class_='tests-pass badge', title='All Buildbot tests pass for this request.')('BB Tested')
+def tests_pass_badge(request):
+    return T.span(class_='tests-pass badge', title='All Buildbot tests pass for this request.')(
+        T.a(href=request.tests_pass_url or '#')('BB Tested')
+        )
 
 request_flags_badge_map = (
     ('push_plans', push_plans_badge),
@@ -97,7 +99,7 @@ request_flags_badge_map = (
     )
 
 def request_badges(request):
-    return [badge() for flag, badge in request_flags_badge_map if getattr(request, flag)]
+    return [badge(request) for flag, badge in request_flags_badge_map if getattr(request, flag)]
 
 def request_item(request):
     li = T.li(class_='request clearfix')(
@@ -166,6 +168,7 @@ def new_request_form(push=None, subject='', message='', branch=''):
                     T.div(
                         T.input(id='new-request-tests-pass', type='checkbox', name='tests_pass', class_='checkbox'),
                         T.label(for_='new-request-tests-pass', class_='checkbox')('Passes Buildbot'),
+                        T.input(id='new-request-tests-pass-url', name='tests_pass_url', class_='tests-pass-url'),
                         ),
                     T.div(
                         T.input(id='new-request-push-plans', type='checkbox', name='push_plans', class_='checkbox'),

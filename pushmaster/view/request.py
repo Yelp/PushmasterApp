@@ -49,6 +49,7 @@ def edit_request_form(request):
                     T.div(
                         T.input(id='edit-request-tests-pass-'+request_id, type='checkbox', name='tests_pass', checked=request.tests_pass, class_='checkbox'),
                         T.label(for_='edit-request-tests-pass-'+request_id, class_='checkbox')('Passes Buildbot'),
+                        T.input(id='edit-request-tests-pass-url-'+request_id, name='tests_pass_url', class_='tests-pass-url', value=request.tests_pass_url),
                         ),
                     T.div(
                         T.input(id='edit-request-push-plans-'+request_id, type='checkbox', name='push_plans', checked=request.push_plans, class_='checkbox'),
@@ -132,6 +133,7 @@ class Requests(RequestHandler):
         js_serials = self.request.get('js_serials', 'off')
         img_serials = self.request.get('img_serials', 'off')
         tests_pass = self.request.get('tests_pass', 'off')
+        tests_pass_url = self.request.get('tests_pass_url', '')
         target_date = self.request.get('target_date')
         target_date = datetime.datetime.strptime(target_date, '%Y-%m-%d').date() if target_date else None
 
@@ -154,6 +156,7 @@ class Requests(RequestHandler):
             js_serials=(js_serials == 'on'),
             img_serials=(img_serials == 'on'),
             tests_pass=(tests_pass == 'on'),
+            tests_pass_url=tests_pass_url,
             target_date=target_date,
             branch=branch,
             )
@@ -214,6 +217,7 @@ class EditRequest(RequestHandler):
             assert img_serials in ('on', 'off'), 'img_serials must be on or off'
             tests_pass = self.request.get('tests_pass', 'off')
             assert tests_pass in ('on', 'off'), 'tests_pass must be on or off'
+            tests_pass_url = self.request.get('tests_pass_url', '')
             logic.edit_request(
                 request, 
                 subject=subject, 

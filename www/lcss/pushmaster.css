@@ -278,6 +278,11 @@ form.request textarea {
 	height: 10em;
 }
 
+form.request .tests-pass-url {
+	width: 50%;
+	margin-left: 10px;
+}
+
 form.push.request div.content, form.edit.request div.content {
     display: none;
 }
@@ -369,6 +374,12 @@ li.request.rejected .request-subject {
     border-radius: 0.3em;
     -moz-border-radius: 0.3em;
     -webkit-border-radius: 0.3em;
+}
+
+.badge a {
+    color: inherit;
+    background: transparent;
+    text-decoration: inherit;
 }
 
 a.push-plans {

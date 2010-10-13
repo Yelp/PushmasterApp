@@ -126,6 +126,8 @@ class Request(TrackedModel):
 
     tests_pass = db.BooleanProperty(default=False)
 
+    tests_pass_url = db.StringProperty(default='')
+
     push = db.ReferenceProperty(Push, collection_name='requests')
 
     @property

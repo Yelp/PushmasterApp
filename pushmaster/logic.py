@@ -20,7 +20,7 @@ def edit_request(request, subject, **kw):
     assert request.state in ('requested', 'rejected')
     return set_request_properties(request, subject, **kw)
 
-def set_request_properties(request, subject, message=None, push_plans=False, urgent=False, js_serials=False, target_date=None, branch=None, img_serials=False, tests_pass=False):
+def set_request_properties(request, subject, message=None, push_plans=False, urgent=False, js_serials=False, target_date=None, branch=None, img_serials=False, tests_pass=False, tests_pass_url=''):
     assert len(subject) > 0
     target_date = target_date or datetime.date.today()
 
@@ -33,6 +33,7 @@ def set_request_properties(request, subject, message=None, push_plans=False, urg
     request.js_serials = js_serials
     request.img_serials = img_serials
     request.tests_pass = tests_pass
+    request.tests_pass_url = tests_pass_url
     request.urgent = urgent
     request.target_date = target_date
     if message:
