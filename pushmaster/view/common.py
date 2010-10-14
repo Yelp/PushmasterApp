@@ -77,13 +77,13 @@ def user_home_link(user, user_info):
 def display_user_email(user):
     return T.span(class_='email')(user_email(user)),
 
-def push_plans_badge(_):
+def push_plans_badge(_=None):
     return T.a(class_='push-plans badge', href=config.push_plans_url, title='This request has push plans.')('Push Plans')
 
-def js_serials_badge(_):
+def js_serials_badge(_=None):
     return T.span(class_='js-serials badge', title='This request requires the pushmaster to bump Javascript serials.')('JS')
 
-def img_serials_badge(_):
+def img_serials_badge(_=None):
     return T.span(class_='img-serials badge', title='This request requires the pushmaster to bump image serials.')('Image')
 
 def tests_pass_badge(request):
