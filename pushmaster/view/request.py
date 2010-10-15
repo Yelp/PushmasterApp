@@ -227,6 +227,7 @@ class EditRequest(RequestHandler):
                 js_serials=js_serials == 'on', 
                 img_serials=img_serials == 'on',
                 tests_pass=(tests_pass == 'on'),
+                tests_pass_url=tests_pass_url,
                 target_date=target_date, 
                 branch=branch,
                 )
