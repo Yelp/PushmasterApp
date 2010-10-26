@@ -5,6 +5,7 @@ import logging
 from django.utils import simplejson as json
 from google.appengine.api import users
 from google.appengine.api.datastore_errors import BadKeyError
+from google.appengine.ext import db
 
 from pushmaster import model
 from pushmaster import query
@@ -89,3 +90,94 @@ class EditPush(RequestHandler):
     def render_request_info(self, pending_requests):
         return [r.json for r in pending_requests]
 
+
+class Search(RequestHandler):
+    def get(self):
+        self.response.headers['Cache-Control'] = 'no-cache'
+        self.response.headers['Content-Type'] = 'application/json'
+        results_dict = self.query()
+        return json.dump(results_dict, self.response.out)
+
+
+    #
+    # generalized field parsers
+    #
+
+
+    def parse_owner(self, query):
+        owner_field = self.request.get('owner')
+        if owner_field:
+            owner = users.User(owner_field)
+            query.filter('owner =', owner)
+        return query
+
+
+    def parse_state(self, query):
+        state_field = self.request.get('state')
+        if state_field:
+            query.filter('state =', state_field)
+        return query
+
+
+    #
+    # query constructors
+    #
+
+
+    def query(self):
+        # build query
+        query = None
+        model_field = self.request.get('model')
+        if model_field == 'request':
+            query = self.request_query()
+        elif model_field == 'push':
+            query = self.push_query()
+        else:
+            return {'results': [], 'cursor': None}
+
+        # cursor
+        cursor_field = self.request.get('cursor')
+        if cursor_field:
+            query.with_cursor(cursor_field)
+
+        # how many results to fetch
+        limit = 10
+        limit_field = self.request.get('limit')
+        if limit_field:
+            try:
+                limit = min(100, int(limit_field))
+            except ValueError:
+                pass
+
+        # execute
+        results = query.fetch(limit)
+        cursor = query.cursor() if results else None
+
+        return {'results': [result.json for result in results], 'cursor': cursor}
+
+
+    def push_query(self):
+        query = db.Query(model.Push)
+        self.parse_owner(query)
+        self.parse_state(query)
+
+        return query
+
+
+    def request_query(self):
+        query = db.Query(model.Request)
+        self.parse_owner(query)
+        self.parse_state(query)
+
+        # limited to a push
+        push_field = self.request.get('push')
+        if push_field:
+            if push_field == 'current':
+                push = query.current_push()
+                if push:
+                    query.filter('push =', push)
+            else:
+                push_key = db.Key(push_field)
+                query.filter('push =', push_key)
+
+        return query

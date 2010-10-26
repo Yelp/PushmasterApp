@@ -25,6 +25,7 @@ class LoggingWSGIApplication(webapp.WSGIApplication):
 application = LoggingWSGIApplication([
         ('/requests', request.Requests),
         ('/pushes', push.Pushes),
+        ('/api/search', api.Search),
         ('/api/pushes', api.Pushes),
         ('/request/([^/]+)', request.EditRequest),
         ('/push/(.+)', push.EditPush),

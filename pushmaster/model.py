@@ -20,7 +20,7 @@ class ConfigModel(db.Model):
     mail_request = db.StringProperty()
     push_plans_url = db.StringProperty()
     git_branch_url = db.StringProperty()
-    
+
 
 class TrackedModel(db.Model):
 
