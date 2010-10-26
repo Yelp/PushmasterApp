@@ -39,7 +39,7 @@ class Push(TrackedModel):
 
     default_state = all_states[0]
 
-    all_stages = ('stagex', 'stagea')
+    all_stages = ('stagea', 'stagex')
 
     default_stage = all_stages[0]
 
