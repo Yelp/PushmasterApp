@@ -89,6 +89,8 @@ class Push(TrackedModel):
         return {'key': unicode(self.key()),
                 'state': self.state,
                 'owner': self.owner.email(),
+                'name': self.name,
+                'stage': self.stage,
                 'ctime': self.ctime.strftime('%s') if self.ctime else '',
                 'mtime': self.mtime.strftime('%s') if self.mtime else '',
                 'ltime': self.ltime.strftime('%s') if self.ltime else '',

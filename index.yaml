@@ -34,3 +34,10 @@ indexes:
   - name: state
   - name: mtime
     direction: desc
+
+- kind: Request
+  properties:
+  - name: owner
+  - name: state
+  - name: ctime
+    direction: desc

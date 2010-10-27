@@ -140,6 +140,10 @@ class Search(RequestHandler):
         if cursor_field:
             query.with_cursor(cursor_field)
 
+        # order
+        for order_field in self.request.get_all('order'):
+            query.order(order_field)
+
         # how many results to fetch
         limit = 10
         limit_field = self.request.get('limit')
