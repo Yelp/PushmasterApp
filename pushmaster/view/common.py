@@ -120,7 +120,7 @@ def request_item(request):
     if request.owner == users.get_current_user():
         li.attrs['class'] += ' own'
 
-    request_branch = T.a(request.branch, href=config.git_branch_url % dict(branch=request.branch))
+    request_branch = T.a(request.branch, class_='branch', href=config.git_branch_url % dict(branch=request.branch))
     li(request_badges(request), request_branch, T.div(linkify(request.message), class_='message'))
 
     return li
