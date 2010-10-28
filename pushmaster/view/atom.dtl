@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://{{ config.hostname }}/</id>
+  <updated>{{ updated | date:"%Y-%m-%dT%H:%M:%S%Z" }}</updated>
+  <link href="{{ urls.atom_feed }}" rel="self"/>
+  <link href="http://{{ config.hostname }}/"/>
+  <title>Pushmaster App</title>
+  <subtitle>Pushes and Requests from Pushmaster App</subtitle>
+  {% for entry in entries %}
+  <entry>
+	<id>pushmaster:{{ entry.type }}:{{ entry.id }}</id>
+	<updated>{{ entry.updated | date:"%Y-%m-%dT%H:%M:%S%Z" }}</updated>
+	<link href="{{ entry.url }}"/>
+	<title>{{ entry.title }}</title>
+	<summary>{{ entry.summary }}</summary>
+	<content type="xhtml">
+	  <div xmlns="http://www.w3.org/1999/xhtml">
+		{{ entry.content | safe }}
+	  </div>
+	</content>
+  </entry>
+  {% endfor %}
+</feed>

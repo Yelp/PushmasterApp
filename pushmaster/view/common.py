@@ -254,6 +254,7 @@ def display_push_state(push):
 
 favicon = T.link(rel='shortcut icon', type='image/x-icon', href=config.favicon)
 meta_content_type = T.meta(**{ 'http-equiv': 'Content-type', 'content': 'text/html;charset=UTF-8' })
+feed_link = T.link(type='application/atom+xml', rel='alternate', title='Atom Feed', href=urls.atom_feed)
 
 def stylesheet(href, external=False):
     return T('link', rel='stylesheet', href=href if external else urls.static_url(href))
@@ -275,9 +276,10 @@ class Document(XHTML):
         super(Document, self).__init__()
         self.title = T.title(title) if title else T.title()
         self.head = T.head(
-            meta_content_type, 
+            meta_content_type,
             self.title,
             favicon,
+            feed_link,
             reset_css,
             jquery_ui_css,
             pushmaster_css,
@@ -315,7 +317,7 @@ class Document(XHTML):
 
 def request_state_display(state):
     return {
-        'requested': 'Requested', 
+        'requested': 'Requested',
         'accepted': 'Accepted',
         'checkedin': 'Checked In',
         'onstage': 'On Stage',

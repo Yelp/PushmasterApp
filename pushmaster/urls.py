@@ -32,3 +32,5 @@ def static_url(path):
 mail_task = '/tasks/mail'
 
 xmpp_task = '/tasks/xmpp'
+
+atom_feed = '/atom.xml'

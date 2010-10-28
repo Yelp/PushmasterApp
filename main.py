@@ -8,6 +8,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from pushmaster import config
 from pushmaster.view import api
 from pushmaster.view import home
+from pushmaster.view import feed
 from pushmaster.view import request
 from pushmaster.view import push
 from pushmaster.view import report
@@ -38,6 +39,7 @@ application = LoggingWSGIApplication([
         ('/user/(.+)', home.UserHome),
         ('/favicon.ico', home.Favicon),
         ('/bookmarklet', home.Bookmarklet),
+        ('/atom.xml', feed.Atom),
         ('/', home.Root),
         ('.*', home.NotFound),
         ], debug=config.debug)
