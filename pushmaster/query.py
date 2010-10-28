@@ -28,7 +28,8 @@ def current_push():
     current_push = memcache.get(CURRENT_PUSH_CACHE_KEY)
     if current_push is None:
         states = ('accepting', 'onstage')
-        current_push = model.Push.all().filter('state in', states).order('-ctime').get()
+        current_pushes = list(model.Push.all().filter('state in', states).order('-ctime'))
+        current_push = current_pushes[-1] if current_pushes else None
         memcache.add(CURRENT_PUSH_CACHE_KEY, current_push or NO_CURRENT_PUSH, CACHE_SECONDS)
     elif current_push == NO_CURRENT_PUSH:
         return None
