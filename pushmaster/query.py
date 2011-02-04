@@ -1,3 +1,4 @@
+import collections
 import datetime
 
 from google.appengine.api import memcache
@@ -20,6 +21,15 @@ def push_requests(push, state=None):
 
     return requests
 
+
+def requests_for_pushes(pushes):
+    push_key_to_requests = collections.defaultdict(list)
+    all_requests = model.Request.all().filter('push IN', pushes)
+    for request in all_requests:
+        push_key_to_requests[request.push.key()].append(request)
+    return push_key_to_requests
+
+
 CURRENT_PUSH_CACHE_KEY = 'push-current'
 OPEN_PUSHES_CACHE_KEY = 'push-open'
 NO_CURRENT_PUSH = 'no-current-push'
@@ -40,7 +50,7 @@ def open_pushes():
     open_pushes = memcache.get(OPEN_PUSHES_CACHE_KEY)
     if open_pushes is None:
         states = ('accepting', 'onstage', 'live')
-        open_pushes = model.Push.all().filter('state in', states).order('-ctime').fetch(25)
+        open_pushes = model.Push.all().filter('state in', states).order('-ctime').fetch(20)
         open_pushes = sorted(open_pushes, key=lambda p: p.ptime, reverse=True)
         memcache.add(OPEN_PUSHES_CACHE_KEY, open_pushes, 60 * 60)
     return open_pushes

@@ -17,31 +17,32 @@ __all__ = ('Pushes', 'EditPush')
 
 log = logging.getLogger('pushmaster.view.push')
 
-def push_item(push):
-    requests = query.push_requests(push)
-    return T.li(class_='push')(
-        T.div(
-            common.display_datetime(push.ptime),
-            T.a(href=push.uri)(push.name or 'push'),
-            common.user_home_link(push.owner, logic.user_info(push.owner)),
-            T.span(class_='state')(common.display_push_state(push)),
-            class_='headline',
-            ),
-        T.ol(map(common.request_item, requests)) if requests else T.div('No requests.'),
-    )
 
 class Pushes(RequestHandler):
     def get(self):
         doc = common.Document(title='pushmaster: recent pushes')
-        
+
         pushes = query.open_pushes()
-        
+        push_key_to_requests = query.requests_for_pushes(pushes)
+
+        def push_item(push):
+            requests = push_key_to_requests[push.key()]
+            return T.li(class_='push')(
+                T.div(
+                    common.display_datetime(push.ptime),
+                    T.a(href=push.uri)(push.name or 'push'),
+                    common.user_home_link(push.owner, logic.user_info(push.owner)),
+                    T.span(class_='state')(common.display_push_state(push)),
+                    class_='headline',
+                    ),
+                T.ol(map(common.request_item, requests)) if requests else T.div('No requests.'),
+                )
         doc.body(T.h1('Recent Pushes'), T.ol(map(push_item, pushes)))
         doc.serialize(self.response.out)
 
     def post(self):
         action = self.request.get('act')
-        
+
         if action == 'new_push':
             name = self.request.get('name')
             push = logic.create_push(name=name)
@@ -97,13 +98,13 @@ def push_actions_form(push, requests):
             fields(T.span(' or '))
         fields(T.button(type='submit', name='act', value='abandon')('Abandon'))
         button_count +=1
-        
+
     return form
 
 def mark_checked_in_form(request):
     return T.form(class_='small', method='post', action=request.uri)(
         T.div(class_='fields')(
-            T.button(type='submit')('Mark Checked In'), 
+            T.button(type='submit')('Mark Checked In'),
             common.hidden(push='true', act='markcheckedin')))
 
 def withdraw_form(request):
@@ -115,7 +116,7 @@ def withdraw_form(request):
 def mark_tested_form(request):
     return T.form(class_='small', method='post', action=request.uri)(
         T.div(class_='fields')(
-            T.button(type='submit')('Mark Verified'), 
+            T.button(type='submit')('Mark Verified'),
             common.hidden(push='true', act='marktested')))
 
 def reject_request_link(request):
@@ -176,7 +177,7 @@ class EditPush(RequestHandler):
             push_div(push_actions_form(push, requests)(class_='small push-action'))
         elif push.can_change_owner:
             push_div(common.take_ownership_form(push)(class_='small push-action'))
-            
+
         header = T.h1(common.display_datetime(push.ptime), T.span(class_='name')(push.name or ''), common.user_home_link(push.owner, logic.user_info(push.owner)))
 
         if any(request.push_plans for request in requests):
@@ -216,8 +217,8 @@ class EditPush(RequestHandler):
                 li = common.request_item(request)
                 if current_user == push.owner:
                     li.children.insert(0, T.div(class_='actions')(
-                            mark_checked_in_form(request), 
-                            T.span('or', class_='sep'),  
+                            mark_checked_in_form(request),
+                            T.span('or', class_='sep'),
                             withdraw_form(request),
                             T.span('or', class_='sep'),
                             reject_request_link(request),
@@ -243,7 +244,7 @@ class EditPush(RequestHandler):
             accepted_requests = requests_with_state('accepted')
             if accepted_requests:
                 requests_div(T.div('cherry-pick-branches %s' % (' '.join(['"%s"' % request.branch for request in accepted_requests if request.branch]),), class_='code'))
-                    
+
         if push.editable:
             if pending_requests:
                 pending_requests_title = ('Pending Requests (%d)' % len(pending_requests)) if len(pending_requests) > 5 else 'Pending Requests'
@@ -278,4 +279,3 @@ class EditPush(RequestHandler):
 
         else:
             raise HTTPStatusCode(httplib.BAD_REQUEST)
-
