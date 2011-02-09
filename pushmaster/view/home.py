@@ -38,13 +38,13 @@ class Root(RequestHandler):
             return self.redirect('/user/' + users.get_current_user().email())
 
 class FlushMemcache(RequestHandler):
-	def get(self):
-		memcache.flush_all()
+    def get(self):
+        memcache.flush_all()
 
 class UserHome(RequestHandler):
     def get(self, email):
         email = urllib.unquote_plus(email)
-        
+
         doc = common.Document(title='pushmaster: recent activity: ' + email)
 
         doc.body(T.div(class_='bookmarklet')(common.bookmarklet(self.hostname)))
