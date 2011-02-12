@@ -87,7 +87,12 @@ def request_display(request, push):
         )
     div = T.div(class_='request')(title)
     if request.branch:
-        div(T.h3(T.span('Branch: '), T.a(request.branch, href=config.git_branch_url % dict(branch=request.branch))))
+        if '/' in request.branch:
+            repo, _, branch = request.branch.partition('/')
+            repo = 'devs/%s.git' % repo
+        else:
+            repo, branch = 'yelp-main.git', request.branch
+        div(T.h3(T.span('Branch: '), T.a(request.branch, href=config.git_branch_url % dict(repo=repo,branch=branch))))
 
     if push:
         div(T.h3(T.span('Push: '), T.a('%s %s' % (util.format_datetime(push.ptime), push.name), href=push.uri)))
