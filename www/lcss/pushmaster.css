@@ -324,7 +324,7 @@ li.request .branch {
 
 .details li.request .message {
     display: block;
-    background: #eee;
+    background-color: #eee;
     border-left: 1px solid #aaa;
     line-height: 20px;
     margin: 5px;
@@ -347,6 +347,10 @@ li.request .email {
 
 li.request.own {
     background-color: rgba(181, 226, 255, 0.50);
+}
+
+ol.my.requests li.request.own {
+    background-color: rgba(250, 250, 250, 0.75);
 }
 
 li.request.future .date {
