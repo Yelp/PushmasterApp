@@ -3,6 +3,9 @@ version: none
 runtime: python
 api_version: 1
 
+builtins:
+- datastore_admin: on
+
 inbound_services:
 - mail
 
@@ -24,7 +27,7 @@ handlers:
   script: pushmaster/tasks.py
   login: admin
 
-- url: /_ah/mail/.+ 
+- url: /_ah/mail/.+
   script: pushmaster/mail.py
   login: admin
 
