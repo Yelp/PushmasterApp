@@ -314,3 +314,13 @@ def create_user_info(user):
 
 def user_info(user):
     return query.info_for_user(user) or create_user_info(user)
+
+
+def unlive(push):
+    push.state = 'onstage'
+    push.put()
+    for request in push.requests:
+        request.state = 'tested'
+        request.put()
+    push.bust_requests_cache()
+    query.bust_push_caches()
