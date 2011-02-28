@@ -73,7 +73,6 @@ def create_push(name=None):
     push = model.Push(name=name)
 
     push.put()
-    push.bust_push_caches()
     query.bust_push_caches()
 
     return push
@@ -216,7 +215,7 @@ def send_to_live(push):
     push.ltime = datetime.datetime.utcnow()
 
     push.put()
-    push.bust_push_caches()
+    query.bust_push_caches()
     push.bust_requests_cache()
 
     return push
@@ -276,7 +275,7 @@ def force_live(push):
     push.ltime = push.mtime
 
     push.put()
-    push.bust_push_caches()
+    query.bust_push_caches()
 
     return push
 
