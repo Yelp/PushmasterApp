@@ -1,6 +1,6 @@
 import os
 import timezone
-from model import ConfigModel
+from pushmaster.model import ConfigModel
 
 try:
     is_dev = os.environ['SERVER_SOFTWARE'].startswith('Dev')

@@ -73,6 +73,8 @@ def create_push(name=None):
     push = model.Push(name=name)
 
     push.put()
+    push.bust_push_caches()
+    query.bust_push_caches()
 
     return push
 
@@ -86,6 +88,8 @@ def abandon_push(push):
         request.put()
 
     push.put()
+    query.bust_push_caches()
+    query.bust_push_caches()
     query.bust_request_caches()
     push.bust_requests_cache()
 
@@ -148,6 +152,7 @@ def send_to_stage(push, stage):
             push.stage = stage
 
             push.put()
+            query.bust_push_caches()
 
         for request in checkedin_requests:
             request.state = 'onstage'
@@ -211,6 +216,7 @@ def send_to_live(push):
     push.ltime = datetime.datetime.utcnow()
 
     push.put()
+    push.bust_push_caches()
     push.bust_requests_cache()
 
     return push
@@ -270,6 +276,7 @@ def force_live(push):
     push.ltime = push.mtime
 
     push.put()
+    push.bust_push_caches()
 
     return push
 

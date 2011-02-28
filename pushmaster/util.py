@@ -6,9 +6,8 @@ import os
 from google.appengine.api import xmpp
 from google.appengine.api.labs import taskqueue
 
-import config
-import timezone
-import urls
+from pushmaster import config, timezone, urls
+
 
 log = logging.getLogger('pushmaster.util')
 

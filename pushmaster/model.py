@@ -3,9 +3,8 @@ import datetime
 from google.appengine.api import memcache
 from google.appengine.ext import db
 
-import query
-import timezone
-import urls
+
+from pushmaster import urls
 
 
 __author__ = 'Jeremy Latt <jlatt@yelp.com>'
@@ -78,11 +77,6 @@ class Push(TrackedModel):
     def api_uri(self):
         return urls.api_push(self)
 
-    def put(self):
-        try:
-            return super(Push, self).put()
-        finally:
-            query.bust_push_caches()
 
     @property
     def json(self):

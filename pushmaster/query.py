@@ -3,8 +3,8 @@ import datetime
 from google.appengine.api import memcache
 from google.appengine.ext import db
 
-import model
-import timezone
+from pushmaster import model, timezone, util
+
 
 CACHE_SECONDS = 60 * 60 * 24
 
@@ -65,9 +65,10 @@ def current_requests():
     requests = memcache.get(CURRENT_REQUESTS_CACHE_KEY)
     if requests is None:
         requests = model.Request.all().filter('state =', 'requested')
-        requests = sorted(requests, key=lambda r: (not r.urgent, r.target_date, not r.tests_pass, r.mtime))
         memcache.add('request-current', requests, CACHE_SECONDS)
-
+    today = util.tznow().date()
+    request_key = lambda r: (not r.urgent, today if r.target_date < today else r.target_date, not r.tests_pass, r.mtime)
+    requests = sorted(requests, key=request_key)
     return requests
 
 def pending_requests(not_after=None):

@@ -32,12 +32,12 @@ indexes:
   properties:
   - name: owner
   - name: state
-  - name: mtime
+  - name: ctime
     direction: desc
 
 - kind: Request
   properties:
   - name: owner
   - name: state
-  - name: ctime
+  - name: mtime
     direction: desc
