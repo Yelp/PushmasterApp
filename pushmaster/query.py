@@ -65,7 +65,7 @@ def current_requests():
     requests = memcache.get(CURRENT_REQUESTS_CACHE_KEY)
     if requests is None:
         requests = model.Request.all().filter('state =', 'requested')
-        requests = sorted(requests, key=lambda r: (not r.urgent, r.target_date, r.mtime))
+        requests = sorted(requests, key=lambda r: (not r.urgent, r.target_date, not r.tests_pass, r.mtime))
         memcache.add('request-current', requests, CACHE_SECONDS)
 
     return requests
