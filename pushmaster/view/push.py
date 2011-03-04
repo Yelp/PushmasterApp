@@ -36,7 +36,7 @@ class Pushes(RequestHandler):
 
         pushes = query.open_pushes()
 
-        doc.body(T.h1('Recent Pushes'), T.ol(map(push_item, pushes)))
+        doc.body(T.h1('Recent Pushes'), T.ol(map(push_item, pushes), class_='requests'))
         doc.serialize(self.response.out)
 
     def post(self):
