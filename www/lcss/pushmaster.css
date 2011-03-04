@@ -336,7 +336,6 @@ li.request .branch {
 }
 
 li.request .date {
-    display: none;
     font-size: 80%;
     margin-right: 0.25em;
 }
@@ -351,10 +350,6 @@ li.request.own {
 
 ol.my.requests li.request.own {
     background-color: rgba(250, 250, 250, 0.75);
-}
-
-li.request.future .date {
-    display: inline;
 }
 
 li.request a.request-subject {
