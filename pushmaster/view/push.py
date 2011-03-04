@@ -13,7 +13,7 @@ from pushmaster import config, logic, model, query, urls, util
 from pushmaster.view import common, HTTPStatusCode, RequestHandler
 
 __author__ = 'Jeremy Latt <jlatt@yelp.com>'
-__all__ = ('Pushes', 'EditPush')
+__all__ = ('Pushes', 'EditPush', 'PushJSON')
 
 log = logging.getLogger('pushmaster.view.push')
 
@@ -121,11 +121,8 @@ def mark_tested_form(request):
 def reject_request_link(request):
     return T.a('Reject', class_='reject-request', href=request.uri, title=request.subject)
 
-class EditPush(RequestHandler):
-    def get_request_header_list(self, header, default=''):
-        hval = self.request.headers.get(header, default)
-        return [part.strip() for part in hval.split(',')]
 
+class PushCommon(RequestHandler):
     def get(self, push_id):
         push = None
 
@@ -141,33 +138,11 @@ class EditPush(RequestHandler):
 
         current_user = users.get_current_user()
         pending_requests = query.pending_requests(not_after=util.tznow().date()) if current_user == push.owner else []
+        self.render(push, current_user, pending_requests)
 
-        if 'application/json' in self.get_request_header_list('Accept', default='*/*'):
-            requests = query.push_requests(push)
-            push_div = self.render_push_div(current_user, push, requests, pending_requests)
-            response = {'push': dict(key=unicode(push.key()), state=push.state), 'html': unicode(push_div)}
-            self.response.headers['Vary'] = 'Accept'
-            self.response.headers['Content-Type'] = 'application/json'
-            self.response.headers['Cache-Control'] = 'no-store'
-            self.response.out.write(json.dumps(response))
-
-        else:
-            doc = self.render_doc(current_user, push, pending_requests)
-            self.response.out.write(unicode(doc))
-
-    def render_doc(self, current_user, push, pending_requests):
-        doc = common.Document(title='pushmaster: push: %s %s' % (util.format_datetime(push.ptime), push.name))
-        doc.funcbar(T.span('|', class_='sep'), common.push_email(push, 'Send Mail to Requesters'))
-
-        requests = query.push_requests(push)
-        push_div = self.render_push_div(current_user, push, requests, pending_requests)
-        doc.body(push_div)
-
-        doc.scripts(common.script('/js/push.js'))
-        push_json = ScriptCData('this.push = %s;' % json.dumps(dict(key=str(push.key()), state=push.state)))
-        doc.head(T.script(type='text/javascript')(push_json))
-
-        return doc
+    def get_request_header_list(self, header, default=''):
+        hval = self.request.headers.get(header, default)
+        return [part.strip() for part in hval.split(',')]
 
     def render_push_div(self, current_user, push, requests, pending_requests):
         push_div = T.div(class_='push')
@@ -251,6 +226,26 @@ class EditPush(RequestHandler):
 
         return push_div
 
+
+class EditPush(PushCommon):
+    def render(self, push, current_user, pending_requests):
+        doc = self.render_doc(push, current_user, pending_requests)
+        doc.serialize(self.response.out)
+
+    def render_doc(self, push, current_user, pending_requests):
+        doc = common.Document(title='pushmaster: push: %s %s' % (util.format_datetime(push.ptime), push.name))
+        doc.funcbar(T.span('|', class_='sep'), common.push_email(push, 'Send Mail to Requesters'))
+
+        requests = query.push_requests(push)
+        push_div = self.render_push_div(current_user, push, requests, pending_requests)
+        doc.body(push_div)
+
+        doc.scripts(common.script('/js/push.js'))
+        push_json = ScriptCData('this.push = %s;' % json.dumps(dict(key=str(push.key()), state=push.state)))
+        doc.head(T.script(type='text/javascript')(push_json))
+
+        return doc
+
     def post(self, push_id):
         try:
             push = model.Push.get(push_id)
@@ -278,3 +273,14 @@ class EditPush(RequestHandler):
 
         else:
             raise HTTPStatusCode(httplib.BAD_REQUEST)
+
+
+class PushJSON(PushCommon):
+    def render(self, push, current_user, pending_requests):
+        requests = query.push_requests(push)
+        push_div = self.render_push_div(current_user, push, requests, pending_requests)
+        response = {'push': dict(key=unicode(push.key()), state=push.state), 'html': unicode(push_div)}
+        self.response.headers['Vary'] = 'Accept'
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Cache-Control'] = 'no-store'
+        json.dump(response, self.response.out)

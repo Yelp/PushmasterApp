@@ -28,6 +28,7 @@ application = LoggingWSGIApplication([
         ('/api/search', api.Search),
         ('/api/pushes', api.Pushes),
         ('/request/([^/]+)', request.EditRequest),
+        ('/push/([^/]+)/json', push.PushJSON),
         ('/push/(.+)', push.EditPush),
         ('/api/push/(.+)', api.EditPush),
         ('/api/request/(.+)', api.Request),
