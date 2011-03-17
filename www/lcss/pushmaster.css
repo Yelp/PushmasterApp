@@ -140,6 +140,14 @@ ol.requests li.urgent a.request-subject {
     font-size: 110%;
 }
 
+ol.requests li.request .verify {
+    display: none;
+}
+
+ol.requests.onstage li.request .verify {
+    display: inline;
+}
+
 ol.my.requests li.request .email {
     display: none;
 }

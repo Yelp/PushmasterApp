@@ -104,8 +104,12 @@ def request_badges(request):
 def request_item(request):
     li = T.li(class_='request clearfix')(
         display_date(request.target_date),
+        ' ',
         T.span(class_='email')(T.a(href=urls.user_home(request.owner))(logic.user_info(request.owner).full_name), ':'),
+        ' ',
         T.a(href=request.uri, class_='request-subject')(request.subject),
+        ' ',
+        T.span(class_='verify')(request.time_to_verify),
         )
 
     if request.target_date > util.tznow().date():
@@ -127,7 +131,14 @@ def request_item(request):
         repo, branch = 'yelp-main.git', request.branch
 
     request_branch = T.a(request.branch, class_='branch', href=config.git_branch_url % dict(repo=repo,branch=branch))
-    li(request_badges(request), request_branch, T.div(linkify(request.message), class_='message'))
+    li(
+        ' ',
+        request_badges(request),
+        ' ',
+        request_branch,
+        ' ',
+        T.div(linkify(request.message), class_='message'),
+        )
 
     return li
 
