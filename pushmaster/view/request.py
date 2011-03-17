@@ -40,6 +40,10 @@ def edit_request_form(request):
                     T.label(for_='edit-request-target-date-'+request_id)('Push Date'),
                     T.input(name='target_date', id='edit-request-target-date-'+request_id, class_='date', value=request.target_date.strftime('%Y-%m-%d') if request.target_date else ''),
                     ),
+                T.div(
+                    T.label(for_='edit-request-time-to-verify-'+request_id)('Time needed to Verify'),
+                    T.input(name='time_to_verify', id='edit-request-time-to-verify-'+request_id, value=request.time_to_verify),
+                    ),
                 T.fieldset(class_='flags')(
                     T.legend('Flags'),
                     T.div(
@@ -128,7 +132,7 @@ class Requests(RequestHandler):
             T.div(common.bookmarklet(self.hostname)),
             )
         doc.serialize(self.response.out)
-        
+
     def post(self):
         subject = self.request.get('subject')
         message = self.request.get('message')
@@ -141,6 +145,7 @@ class Requests(RequestHandler):
         tests_pass_url = self.request.get('tests_pass_url', '')
         target_date = self.request.get('target_date')
         target_date = datetime.datetime.strptime(target_date, '%Y-%m-%d').date() if target_date else None
+        time_to_verify = self.request.get('time_to_verify')
 
         try:
             assert push_plans in ('on', 'off'), 'push_plans must be either on or off'
@@ -154,7 +159,7 @@ class Requests(RequestHandler):
             raise HTTPStatusCode(httplib.BAD_REQUEST)
 
         request = logic.create_request(
-            subject=subject, 
+            subject=subject,
             message=message,
             push_plans=(push_plans == 'on'),
             urgent=(urgent == 'on'),
@@ -164,6 +169,7 @@ class Requests(RequestHandler):
             tests_pass_url=tests_pass_url,
             target_date=target_date,
             branch=branch,
+            time_to_verify=time_to_verify,
             )
 
         push = None
@@ -223,18 +229,20 @@ class EditRequest(RequestHandler):
             tests_pass = self.request.get('tests_pass', 'off')
             assert tests_pass in ('on', 'off'), 'tests_pass must be on or off'
             tests_pass_url = self.request.get('tests_pass_url', '')
+            time_to_verify = self.request.get('time_to_verify')
             logic.edit_request(
-                request, 
-                subject=subject, 
-                message=message, 
-                push_plans=push_plans == 'on', 
-                urgent=urgent == 'on', 
-                js_serials=js_serials == 'on', 
+                request,
+                subject=subject,
+                message=message,
+                push_plans=push_plans == 'on',
+                urgent=urgent == 'on',
+                js_serials=js_serials == 'on',
                 img_serials=img_serials == 'on',
                 tests_pass=(tests_pass == 'on'),
                 tests_pass_url=tests_pass_url,
-                target_date=target_date, 
+                target_date=target_date,
                 branch=branch,
+                time_to_verify=time_to_verify,
                 )
             self.redirect(request.uri)
 

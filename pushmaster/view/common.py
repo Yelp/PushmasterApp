@@ -166,6 +166,10 @@ def new_request_form(push=None, subject='', message='', branch=''):
                     T.label(for_='new-request-target-date')('Push Date'),
                     T.input(name='target_date', id='new-request-target-date', class_='date', value=util.tznow().date().strftime('%Y-%m-%d')),
                     ),
+                T.div(
+                    T.label(for_='new-request-time-to-verify')('Time needed to Verify'),
+                    T.input(name='time_to_verify', id='new-request-time-to-verify'),
+                    ),
                 T.fieldset(class_='flags')(
                     T.legend('Flags'),
                     T.div(

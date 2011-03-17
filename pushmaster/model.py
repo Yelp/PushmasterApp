@@ -10,9 +10,7 @@ from pushmaster import urls
 __author__ = 'Jeremy Latt <jlatt@yelp.com>'
 
 class ConfigModel(db.Model):
-
     timestamp = db.DateTimeProperty(auto_now_add=True)
-
     mail_domain = db.StringProperty()
     mail_sender = db.StringProperty()
     mail_to = db.StringProperty()
@@ -22,34 +20,21 @@ class ConfigModel(db.Model):
 
 
 class TrackedModel(db.Model):
-
     cuser = db.UserProperty(auto_current_user_add=True)
-
     ctime = db.DateTimeProperty(auto_now_add=True)
-
     muser = db.UserProperty(auto_current_user=True)
-
     mtime = db.DateTimeProperty(auto_now=True)
 
 
 class Push(TrackedModel):
-
     all_states = ('accepting', 'onstage', 'live', 'abandoned')
-
     default_state = all_states[0]
-
     all_stages = ('stagea', 'stagex')
-
     default_stage = all_stages[0]
-
     owner = db.UserProperty(auto_current_user_add=True)
-
     state = db.StringProperty(choices=all_states, default=default_state)
-
     ltime = db.DateTimeProperty()
-
     name = db.StringProperty()
-
     stage = db.StringProperty(choices=all_stages, default=default_stage)
 
     @property
@@ -93,38 +78,23 @@ class Push(TrackedModel):
 
 
 class Request(TrackedModel):
-
     all_states = ('requested', 'accepted', 'checkedin', 'onstage', 'tested', 'live', 'abandoned', 'rejected')
-
     default_state = all_states[0]
-
     owner = db.UserProperty(auto_current_user_add=True)
-
     subject = db.StringProperty(default='')
-
     branch = db.StringProperty(default='')
-
     message = db.TextProperty(default='')
-
     state = db.StringProperty(choices=all_states, default=default_state)
-
     reject_reason = db.TextProperty(default='')
-
     target_date = db.DateProperty()
-
     push_plans = db.BooleanProperty(default=False)
-
     js_serials = db.BooleanProperty(default=False)
-
     img_serials = db.BooleanProperty(default=False)
-
     urgent = db.BooleanProperty(default=False)
-
     tests_pass = db.BooleanProperty(default=False)
-
     tests_pass_url = db.StringProperty(default='')
-
     push = db.ReferenceProperty(Push, collection_name='requests')
+    time_to_verify = db.StringProperty(default='')
 
     @property
     def uri(self):
