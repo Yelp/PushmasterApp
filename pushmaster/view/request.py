@@ -60,10 +60,6 @@ def edit_request_form(request):
                         T.label(for_='edit-request-push-plans-'+request_id, class_='checkbox')('Push Plans'),
                         ),
                     T.div(
-                        T.input(id='edit-request-js-serials-'+request_id, type='checkbox', name='js_serials', checked=request.js_serials, class_='checkbox'),
-                        T.label(for_='edit-request-js-serials-'+request_id, class_='checkbox')('Bump Javascript Serials'),
-                        ),
-                    T.div(
                         T.input(id='edit-request-img-serials-'+request_id, type='checkbox', name='img_serials', checked=request.img_serials, class_='checkbox'),
                         T.label(for_='edit-request-img-serials-'+request_id, class_='checkbox')('Bump Image Serials'),
                         ),

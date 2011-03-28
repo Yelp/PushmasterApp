@@ -197,10 +197,6 @@ def new_request_form(push=None, subject='', message='', branch=''):
                         T.label(class_='checkbox', for_='new-request-push-plans')('Push Plans'),
                         ),
                     T.div(
-                        T.input(id='new-request-js-serials', type='checkbox', name='js_serials', class_='checkbox'),
-                        T.label(class_='checkbox', for_='new-request-js-serials')('Bump Javascript Serials'),
-                        ),
-                    T.div(
                         T.input(id='new-request-img-serials', type='checkbox', name='img_serials', class_='checkbox'),
                         T.label(class_='checkbox', for_='new-request-img-serials')('Bump Image Serials'),
                         ),
